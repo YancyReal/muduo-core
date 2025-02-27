@@ -6,3 +6,5 @@ add_library(muduo_core SHARED ${SRC_FILES})
 
 #设置头文件的路径
 target_include_directories(muduo_core PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+target_compile_options(muduo_core PRIVATE -g)

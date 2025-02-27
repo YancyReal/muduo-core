@@ -18,3 +18,8 @@ set(LIBS
 #添加子目录
 add_subdirectory(src)
 add_subdirectory(example)
+
+# 强制默认使用Debug模式（若未指定）
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
