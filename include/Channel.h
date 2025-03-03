@@ -57,21 +57,21 @@ public:
     void remove();
 private:
 
-    void update();
+    void update();  //update其实本质上就是调用了epoll_ctl()
     void handleEventWithGuard(Timestamp receiveTime);
 
     static const int kNoneEvent;
     static const int kReadEvent;
     static const int kWriteEvent;
 
-    EventLoop *loop_; // 事件循环
+    EventLoop *loop_; // 指向 EventLoop 的指针，表示该 Channel 所属的事件循环
     const int fd_;    // fd，Poller监听的对象
     int events_;      // 注册fd感兴趣的事件
     int revents_;     // Poller返回的具体发生的事件
-    int index_;
+    int index_;       // -1:还没添加至Poller，1已经添加至Poller，1已经从Poller删除
 
-    std::weak_ptr<void> tie_;
-    bool tied_;
+    std::weak_ptr<void> tie_; // 绑定机制tie 这个机制的名字来源于英文单词“tie”的本意——绑在一起、关联。在 Muduo 网络库中，tie 机制的作用是将 Channel 和它所依赖的对象（比如 TcpConnection）绑定在一起，
+    bool tied_;     // 标记是否已经使用了 tie
 
     // 因为channel通道里可获知fd最终发生的具体的事件events，所以它负责调用具体事件的回调操作
     ReadEventCallback readCallback_;
